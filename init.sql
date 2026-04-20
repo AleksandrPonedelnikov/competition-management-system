@@ -1,0 +1,2 @@
+-- initial db setup script
+-- will be filled with migration scripts later

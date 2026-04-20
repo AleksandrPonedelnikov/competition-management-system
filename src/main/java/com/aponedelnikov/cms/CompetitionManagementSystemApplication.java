@@ -1,0 +1,13 @@
+package com.aponedelnikov.cms;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CompetitionManagementSystemApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(CompetitionManagementSystemApplication.class, args);
+    }
+
+}

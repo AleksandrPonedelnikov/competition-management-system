@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: cms_postgres
+    environment:
+      POSTGRES_DB: cms
+      POSTGRES_USER: cms_user
+      POSTGRES_PASSWORD: cms_secure
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var:/var/lb/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.db/init.sql
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
