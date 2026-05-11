@@ -18,10 +18,10 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     List<Team> findByCompetitionId(Long competitionId);
 
     /* проверка существования команды с определенным названием в конкретном сорвеновании */
-    boolean existsByNameAAndCompetitionId(String name, Long competitionId);
+    boolean existsByNameAndCompetitionId(String name, Long competitionId);
 
     /* поиск команды по названию и соревнованию */
-    Optional<Team> findByNameAAndCompetition(String name, Competition competition);
+    Optional<Team> findByNameAndCompetition(String name, Competition competition);
 
     /* получение количества команд в соревновании */
     long countByCompetition(Competition competition);

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class TeamServiceImpl implements TeamService {
     private TeamRepository teamRepository;
     private CompetitionRepository competitionRepository;
@@ -35,7 +36,7 @@ public TeamServiceImpl(TeamRepository teamRepository, CompetitionRepository comp
                 .orElseThrow(() -> new RuntimeException("Competition not found"));
 
         /* проверяем уникальность названия команды в соревновании */
-        if(teamRepository.existsByNameAAndCompetitionId(teamDTO.getName(), teamDTO.getCompetitionId())){
+        if(teamRepository.existsByNameAndCompetitionId(teamDTO.getName(), teamDTO.getCompetitionId())){
             throw new RuntimeException("Team with this name already exists in the competition");
         }
 
@@ -77,7 +78,7 @@ public TeamServiceImpl(TeamRepository teamRepository, CompetitionRepository comp
 
         /* обновляем название если изменилось и уникальное */
         if(!existingTeam.getName().equals(teamDTO.getName())) {
-            if(teamRepository.existsByNameAAndCompetitionId(teamDTO.getName(), teamDTO.getCompetitionId())) {
+            if(teamRepository.existsByNameAndCompetitionId(teamDTO.getName(), teamDTO.getCompetitionId())) {
                 throw new RuntimeException("Another team with this name already exists in the competition");
             }
             existingTeam.setName(teamDTO.getName());
@@ -107,6 +108,39 @@ public TeamServiceImpl(TeamRepository teamRepository, CompetitionRepository comp
             throw new RuntimeException("Team not found");
         }
         teamRepository.deleteById(id);
+    }
+
+    @Override
+    public List<TeamDTO> getAllTeams() {
+        return teamRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public TeamDTO addMemberToTeam(Long teamId, Long userId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        team.getMembers().add(user);
+        Team updatedTeam = teamRepository.save(team);
+        return convertToDto(updatedTeam);
+    }
+
+    @Override
+    public TeamDTO removeMemberFromTeam(Long teamId, Long userId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        team.getMembers().remove(user);
+        Team updatedTeam = teamRepository.save(team);
+        return convertToDto(updatedTeam);
     }
 
     private TeamDTO convertToDto(Team team) {

@@ -9,4 +9,8 @@ public interface TeamService {
     List<TeamDTO> getTeamsByCompetition(Long competitionId);
     TeamDTO updateTeam(Long id, TeamDTO teamDTO);
     void deleteTeam(Long id);
+
+    List<TeamDTO> getAllTeams();
+    TeamDTO addMemberToTeam(Long teamId, Long userId);
+    TeamDTO removeMemberFromTeam(Long teamId, Long userId);
 }

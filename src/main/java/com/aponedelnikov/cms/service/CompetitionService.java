@@ -10,5 +10,8 @@ public interface CompetitionService {
     List<CompetitionDTO> getAllCompetitionsByStatus(String status);
     CompetitionDTO updateCompetition(Long id, CompetitionDTO competitionDTO);
     void deleteCompetition(Long id);
+    List<CompetitionDTO> getAllCompetitions();
+    List<CompetitionDTO> getCompetitionsByOrganizer(Long organizerId);
+    List<CompetitionDTO> getCompetitionsByStatus(String status);
 
 }

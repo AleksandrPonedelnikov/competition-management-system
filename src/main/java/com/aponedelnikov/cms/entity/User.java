@@ -19,7 +19,8 @@ public class User {
 
     private String password;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role = Role.PARTICIPANT;
 
     public enum Role {

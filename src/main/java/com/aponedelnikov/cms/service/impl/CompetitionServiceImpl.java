@@ -97,6 +97,29 @@ public class CompetitionServiceImpl implements CompetitionService {
         competitionRepository.deleteById(id);
     }
 
+    @Override
+    public List<CompetitionDTO> getAllCompetitions() {
+        return competitionRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompetitionDTO> getCompetitionsByOrganizer(Long organizerId) {
+        User organizer = userRepository.findById(organizerId)
+                .orElseThrow(() -> new RuntimeException("Organizer not found"));
+        return competitionRepository.findByOrganizer(organizer).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompetitionDTO> getCompetitionsByStatus(String status) {
+        return competitionRepository.findByStatus(status.toUpperCase()).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     private CompetitionDTO convertToDto(Competition competition) {
         CompetitionDTO dto = new CompetitionDTO();
 
