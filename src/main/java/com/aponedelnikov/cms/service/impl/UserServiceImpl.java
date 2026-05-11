@@ -1,6 +1,8 @@
 package com.aponedelnikov.cms.service.impl;
 
 import com.aponedelnikov.cms.entity.User;
+import com.aponedelnikov.cms.entity.User.Role;
+
 import com.aponedelnikov.cms.repository.UserRepository;
 import com.aponedelnikov.cms.service.UserService;
 import com.aponedelnikov.cms.service.dto.UserDTO;
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setRole(Role.vaueOf(userDTO.getRole()));
+        user.setRole(Role.valueOf(userDTO.getRole()));
 
         User savedUser = userRepository.save(user);
         return convertToDto(savedUser);

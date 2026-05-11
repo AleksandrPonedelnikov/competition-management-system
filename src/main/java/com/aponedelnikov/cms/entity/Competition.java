@@ -29,8 +29,8 @@ public class Competition {
     @ManyToOne
     @JoinColumn(name = "organizer_id", nullable = false)
     private User organizer;
-}
 
-enum Status {
-    PLANNED, IN_PROGRESS, COMPLETED
+    public enum Status {
+        PLANNED, IN_PROGRESS, COMPLETED
+    }
 }

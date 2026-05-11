@@ -9,7 +9,8 @@ import com.aponedelnikov.cms.service.dto.CompetitionDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/*import com.aponedelnikov.cms.entity.Status;*/
+/*import com.aponedelnikov.cms.entity.Competition.;*/
+import com.aponedelnikov.cms.entity.Competition.Status;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,14 +30,14 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public CompetitionDTO createCompetition(CompetitionDTO competitionDTO) {
         /* проверка существования организатора */
-        User organizer = userRepository.findById(competitionDTO.getOrganizerId()).getOrganizerId()
+        User organizer = userRepository.findById(competitionDTO.getOrganizerId())
                 .orElseThrow(() -> new RuntimeException("Organizer not found"));
 
         Competition competition = new Competition();
         competition.setName(competitionDTO.getName());
         competition.setDescription(competitionDTO.getDescription());
-        competition.getStartDate(competitionDTO.getStartDate());
-        competition.getEndDate(competitionDTO.getEndDate());
+        competition.setStartDate(competitionDTO.getStartDate());
+        competition.setEndDate(competitionDTO.getEndDate());
         competition.setStatus(Status.valueOf(competitionDTO.getStatus()));
         competition.setOrganizer(organizer);
 
@@ -54,14 +55,14 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public List<CompetitionDTO> getAllCompetitionsByOrganizer(Long organizerId) {
         User organizer = userRepository.findById(organizerId).orElseThrow(() -> new RuntimeException("Organizer not found"));
-        return competitionRepository.findByOrganizer(organizer.stream().map(this::convertToDto))
+        return competitionRepository.findByOrganizer(organizer).stream().map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<CompetitionDTO> getAllCompetitionsByStatus(String status) {
-        return competitionRepository.findByStatus(Status.valueOf(status)).stream()
-                .map(this::convertDto)
+        return competitionRepository.findByStatus(status.toUpperCase()).stream()
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -73,7 +74,7 @@ public class CompetitionServiceImpl implements CompetitionService {
         exisingCompetition.setDescription(competitionDTO.getDescription());
         exisingCompetition.setStartDate(competitionDTO.getStartDate());
         exisingCompetition.setEndDate(competitionDTO.getEndDate());
-        exisingCompetition.setStatus(Status.valueOf(competitionDTO.getStatus());
+        exisingCompetition.setStatus(Status.valueOf(competitionDTO.getStatus()));
 
         /* обновляем организатора если нужно */
         if(competitionDTO.getOrganizerId() != null) {

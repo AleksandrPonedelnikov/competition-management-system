@@ -68,7 +68,7 @@ public TeamServiceImpl(TeamRepository teamRepository, CompetitionRepository comp
 
         return teamRepository.findByCompetition(competition).stream()
                 .map(this::convertToDto)
-                .collect.toList();
+                .collect(Collectors.toList());
     }
 
     @Override

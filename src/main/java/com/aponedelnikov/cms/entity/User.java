@@ -21,8 +21,8 @@ public class User {
 
     @Enumerated
     private Role role = Role.PARTICIPANT;
-}
 
-enum Role {
-    ADMIN, ORGANIZER, PARTICIPANT
+    public enum Role {
+        ADMIN, ORGANIZER, PARTICIPANT
+    }
 }
